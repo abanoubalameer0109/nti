@@ -1,0 +1,32 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+int i;
+int arr[10];
+int max ;
+int min ;
+int main()
+{
+for (i=0;i<10;i++)
+    {
+        printf("enter element %d : \n" , i);
+        scanf("%d" ,&arr[i]);
+    }
+        for(i=0;i<10;i++)
+            {
+                if (arr[i]>max)
+                {
+                    max =arr[i] ;
+                }
+            }
+                            printf("max is :%d \n" ,max);
+    for(i=0;i<10;i++)
+                {
+                    if (arr[i]<min)
+                    {
+                        min =arr[i] ;
+                    }
+                }
+                                printf("min is :%d" ,min);
+
+    return 0;
+}

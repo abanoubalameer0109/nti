@@ -1,0 +1,163 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+int add(int,int);
+int sub(int,int);
+int mult(int,int);
+int div(int,int);
+int and1(int,int);
+int or1(int,int);
+int not1(int);
+int xor1(int,int);
+int reminder(int,int);
+int inc(int);
+int dec(int);
+int x;
+int y;
+int z;
+
+
+int main() {
+  printf("enterid (1=add,2=sub,3=mult,4=div,5=and,6=or,7=or,8=not,9=xor,10=reminder,11=inc,12=dec)");
+  scanf("%d",&x);
+  if(x=1)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,add(y,z));
+  }
+  if(x=2)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,sub(y,z));
+  }
+  if(x=3)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+printf("%d" ,mult(y,z));
+  }
+  if(x=4)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,div(y,z));
+     
+  }if(x=5)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,and1(y,z));
+  }if(x=6)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,or1(y,z));
+  }if(x=7);
+  {
+      printf("enter the number ");
+      scanf("%d",&y);
+printf("%d" ,not1(y));        
+  }if(x=8)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+     printf("%d" ,xor1(y,z));
+  }if(x=9)
+  {
+      printf("enter first number ");
+      scanf("%d",&y);
+         printf("enter second number ");
+      scanf("%d",&z);
+      printf("%d" ,reminder(y,z));
+     
+  }if(x=10)
+  {
+      printf("enter  number ");
+      scanf("%d",&y);
+     
+      printf("%d" ,inc(y));
+  }
+  if(x=11)
+  {
+      printf("enter number ");
+      scanf("%d",&y);
+       
+      printf("%d" ,dec(y));
+  }
+  
+  
+  
+  
+ return 0;
+ }
+ int add(int y,int z)
+ {
+ 
+ return y+z ;
+ }
+int sub(int,int)
+{
+ 
+ return y-z ;
+ }
+int mult(int,int)
+{
+ 
+ return y*z ;
+ }
+
+int div(int,int)
+{
+ 
+ return y/z ;
+ }
+int and(int,int)
+{
+ 
+ return y&z ;
+ }
+ int or(int,int)
+{
+ 
+ return y~z ;
+ }
+int not(int)
+{
+ 
+ return y! ;
+ }
+ int xor(int,int)
+{
+ 
+ return y^z ;
+ }
+ int reminder(int,int)
+{
+ 
+ return y%z ;
+ }
+ int inc(int)
+{
+ 
+ return ++y ;
+ }
+ int dec(int)
+{
+ 
+ return --y ;
+ }

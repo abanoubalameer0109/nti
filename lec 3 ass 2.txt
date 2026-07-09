@@ -1,0 +1,27 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <string.h>
+int main() 
+{
+char user[3][20]={"ahmed","amr","wael"};
+int pas[3]={12347788,56785566,98701122};
+char name [20];
+int pass ;
+int i;
+printf("enter user name :");
+scanf("%s" ,&name);
+printf("enter password :");
+scanf("%s" ,&pass);
+for(i=0;i<3;i++)
+   {
+      if(strcmp(name,user[i])==0&&pass==pas[i]) 
+        {
+            printf("login sucssesful");
+        }
+        else 
+            {
+                printf("invalid user name or pasword ");
+            }
+    return 0;
+}
+}

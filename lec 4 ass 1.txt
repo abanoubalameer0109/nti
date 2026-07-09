@@ -1,0 +1,44 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+int a,b,c,d ;
+int max (int,int,int,int);
+int min (int,int,int,int);
+int main() {
+  printf ("enter num 1 ");
+  scanf ("%d" , &a);
+    printf ("enter num 2 ");
+  scanf ("%d" , &b);
+    printf ("enter num 3 ");
+  scanf ("%d" , &c);
+    printf ("enter num 4 ");
+  scanf ("%d" , &d);
+ int max1 = max(a,b,c,d);
+  printf ("maximum number is %d/n" ,max1);
+  min(a,b,c,d);
+  printf ("minimum number is %d" ,min(a,b,c,d));
+    return 0;
+}
+int max (int a,int b,int c,int d){
+    int max ;
+    if (a>b&&a>c&&a>d){
+    max=a ;}
+    else if (b>a&&b>c&&b>d)
+    {max=b ;}
+     else if(c>a&&c>c&&c>d)
+     {max=c;}
+     else if (d>a&&d>b&&d>c)
+     {max = d;}
+     return max;
+}
+int min (int a,int b,int c,int d){
+    int min ;
+    if (a<b&&a<c&&a<d){
+    min=a ;}
+    else if (b<a&&b<c&&b<d)
+    {min=b ;}
+     else if(c<a&&c<b&&c<d)
+     {min=c;}
+     else if (d<a&&d<b&&d<c)
+     {min = d;}
+     return min;
+}

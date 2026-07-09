@@ -1,0 +1,23 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+int a;
+int b;
+int sum;
+int sub;
+int ande;
+int ore;
+int main() {
+  printf("enter first number\n");
+  scanf("%d" ,&a);
+   printf("enter second number\n");
+  scanf("%d" ,&b);
+  sum = a+b ;
+  sub =a-b ;
+  ande =a&b ;
+  ore =a|b ;
+  printf("a+b=%d\n" ,sum);
+  printf("a-b=%d\n" ,sub);
+  printf("a&b=%d\n" ,ande);
+  printf("a|b=%d\n" ,ore);
+    return 0;
+}
