@@ -1,0 +1,43 @@
+#include <stdio.h>
+typedef unsigned char    u8;
+typedef unsigned short  u16;
+typedef unsigned int    u32;
+typedef signed char      s8;
+typedef signed short    s16;
+typedef signed int      s32;
+typedef float           f32;
+typedef double          f64;
+const u8 MAX_SPEED =255;
+
+void PrintSensorValue(const u16 *ptr );
+
+int main() {
+ 
+printf("System Booting...\n");
+printf("Max Speed Configuration : %d \n",MAX_SPEED);
+    u16 temperature = 75;
+    PrintSensorValue(&temperature);
+
+
+
+
+    u8 PORTA_DATA=0;
+
+u8  * const hardware_ptr = &PORTA_DATA;
+
+*hardware_ptr=100;
+*hardware_ptr=255;
+
+    printf("port data is  %d\n",*hardware_ptr);
+u8 MAX_SPEED=255;
+
+const u32 DEVICE_ID=987654321;
+const u32 * const id_ptr =&DEVICE_ID;
+printf("device id ver %d \n ",*id_ptr);
+
+    return 0;
+}
+void PrintSensorValue(const u16* ptr) {
+
+    printf("the sensor temp is %d\n",*ptr);
+}
