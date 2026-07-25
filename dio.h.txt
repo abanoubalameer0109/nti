@@ -1,0 +1,145 @@
+#define F_CPU 8000000UL
+#include <util/delay.h>
+
+typedef unsigned char u8;
+typedef unsigned short u16;
+
+#define SET_BIT(REG, BIT_NO)    (REG |= (1 << BIT_NO))
+#define CLR_BIT(REG, BIT_NO)    (REG &= ~(1 << BIT_NO))
+#define TOG_BIT(REG, BIT_NO)    (REG ^= (1 << BIT_NO))
+
+#define DDRA  *( (volatile u8*) 0x3A)
+#define PORTA *( (volatile u8*) 0x3B)
+#define PINA  *( (volatile u8*) 0x39)
+#define DDRB  *( (volatile u8*) 0x37)
+#define PORTB *( (volatile u8*) 0x38)
+#define PINB  *( (volatile u8*) 0x36)
+#define DDRC  *( (volatile u8*) 0x34)
+#define PORTC *( (volatile u8*) 0x35)
+#define PINC  *( (volatile u8*) 0x33)
+#define DDRD  *( (volatile u8*) 0x31)
+#define PORTD *( (volatile u8*) 0x32)
+#define PIND  *( (volatile u8*) 0x30)
+
+#define PORT_A   1
+#define PORT_B   2
+#define PORT_C   3
+#define PORT_D   4
+#define INPUT    0
+#define OUTPUT   1
+#define HIGH     1
+#define LOW      0
+int main()
+{
+	
+}
+
+/* Prototypes */
+void DIO_SetPinDirection(u8 Port, u8 pin_no, u8 value);
+void DIO_SetPinValue(u8 Port, u8 pin_no, u8 value);
+u8   DIO_GetPinValue(u8 Port, u8 pin_no);
+void DIO_TogglePinValue(u8 Port, u8 pin_no);
+
+void DIO_SetPortDirection(u8 port, u8 PortDir);
+void DIO_SetPortValue(u8 port, u8 value);
+void DIO_TogglePortValue(u8 port);
+u8   DIO_GetPortValue(u8 port);
+
+
+
+void DIO_SetPinDirection(u8 Port, u8 pin_no, u8 value) {
+	if (value == OUTPUT) {
+		switch (Port) {
+			case PORT_A: SET_BIT(DDRA, pin_no); break;
+			case PORT_B: SET_BIT(DDRB, pin_no); break;
+			case PORT_C: SET_BIT(DDRC, pin_no); break;
+			case PORT_D: SET_BIT(DDRD, pin_no); break;
+		}
+	}
+	else if (value == INPUT) {
+		switch (Port) {
+			case PORT_A: CLR_BIT(DDRA, pin_no); break;
+			case PORT_B: CLR_BIT(DDRB, pin_no); break;
+			case PORT_C: CLR_BIT(DDRC, pin_no); break;
+			case PORT_D: CLR_BIT(DDRD, pin_no); break;
+		}
+	}
+}
+
+void DIO_SetPinValue(u8 Port, u8 pin_no, u8 value) {
+	if (value == HIGH) {
+		switch (Port) {
+			case PORT_A: SET_BIT(PORTA, pin_no); break;
+			case PORT_B: SET_BIT(PORTB, pin_no); break;
+			case PORT_C: SET_BIT(PORTC, pin_no); break;
+			case PORT_D: SET_BIT(PORTD, pin_no); break;
+		}
+	}
+	else if (value == LOW) {
+		switch (Port) {
+			case PORT_A: CLR_BIT(PORTA, pin_no); break;
+			case PORT_B: CLR_BIT(PORTB, pin_no); break;
+			case PORT_C: CLR_BIT(PORTC, pin_no); break;
+			case PORT_D: CLR_BIT(PORTD, pin_no); break;
+		}
+	}
+}
+
+u8 DIO_GetPinValue(u8 Port, u8 pin_no) {
+	u8 result = 0;
+	switch (Port) {
+		case PORT_A: result = (PINA >> pin_no) & 1; break;
+		case PORT_B: result = (PINB >> pin_no) & 1; break;
+		case PORT_C: result = (PINC >> pin_no) & 1; break;
+		case PORT_D: result = (PIND >> pin_no) & 1; break;
+	}
+	return result;
+}
+
+void DIO_TogglePinValue(u8 Port, u8 pin_no) {
+	switch (Port) {
+		case PORT_A: TOG_BIT(PORTA, pin_no); break;
+		case PORT_B: TOG_BIT(PORTB, pin_no); break;
+		case PORT_C: TOG_BIT(PORTC, pin_no); break;
+		case PORT_D: TOG_BIT(PORTD, pin_no); break;
+	}
+}
+
+void DIO_SetPortDirection(u8 port, u8 PortDir){
+	switch(port){
+		case PORT_A: DDRA = PortDir; break;
+		case PORT_B: DDRB = PortDir; break;
+		case PORT_C: DDRC = PortDir; break;
+		case PORT_D: DDRD = PortDir; break;
+	}
+}
+
+void DIO_SetPortValue(u8 port, u8 value){
+	switch(port){
+		case PORT_A: PORTA = value; break;
+		case PORT_B: PORTB = value; break;
+		case PORT_C: PORTC = value; break;
+		case PORT_D: PORTD = value; break;
+	}
+}
+
+void DIO_TogglePortValue(u8 port) {
+	switch (port) {
+		case PORT_A: PORTA = ~PORTA; break;
+		case PORT_B: PORTB = ~PORTB; break;
+		case PORT_C: PORTC = ~PORTC; break;
+		case PORT_D: PORTD = ~PORTD; break;
+	}
+}
+
+u8 DIO_GetPortValue(u8 Port) {
+	u8 result = 0;
+	switch (Port) {
+		case PORT_A: result = PINA; break;
+		case PORT_B: result = PINB; break;
+		case PORT_C: result = PINC; break;
+		case PORT_D: result = PIND; break;
+	}
+	return result;
+}
+
