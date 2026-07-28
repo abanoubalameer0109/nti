@@ -1,5 +1,6 @@
 #define F_CPU 8000000UL
 #include <util/delay.h>
+#include <stdlib.h>
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -20,6 +21,20 @@ typedef unsigned short u16;
 #define DDRD  *( (volatile u8*) 0x31)
 #define PORTD *( (volatile u8*) 0x32)
 #define PIND  *( (volatile u8*) 0x30)
+
+#define ADMUX   *((volatile u8*)0x27)
+#define ADCSRA  *((volatile u8*)0x26)
+#define ADCL    *((volatile u8*)0x24)
+#define ADCH    *((volatile u8*)0x25)
+#define ADC     *((volatile u16*)0x24)
+#define ADPS0 0
+#define ADPS1 1
+#define ADPS2 2
+#define ADIF  4
+#define ADSC  6
+#define ADEN  7
+
+#define REFS0 6
 
 #define PORT_A   1
 #define PORT_B   2
@@ -46,141 +61,76 @@ void lcd_send_data(u8 data);
 void lcd_send_string(u8* str);
 void lcd_init(void);
 
-void KEYPAD_Init(void) ;
-u8 PressedKey(void);
- u8 keys[4][4] =
- {
-	 {'7', '8', '9', '/'},
-	 {'4', '5', '6', '*'},
-	 {'1', '2', '3', '-'},
-	 {'C', '0', '=', '+'}
- }; 
-u8 result ();
- u8 key;
-int main(void)
+void ADC_init(void);
+void ADC_voidEnable(void);
+void ADC_voidDisable(void);
+void ADC_voidStartConversion(u8 addresscpy);
+u16 ADC_u16ReadADC(void);
+int main (void)
 {
-	u8 res;
+	DDRA = 0x00;
+	DDRC =0b11111111 ;
+	ADC_init();
+	ADC_voidEnable();
 
-	lcd_init();
-	KEYPAD_Init();
+while(1)
+{
+	u16 volt = ADC_u16ReadADC();
+	u16 temp = volt / 10;
+SetPinValue(PORT_C,0,0);
+SetPinValue(PORT_C,1,0);
+SetPinValue(PORT_C,2,0);
 
-	while (1)
+	if(temp < 20)
 	{
-		res = result();
-
-		lcd_send_data(res + '0');
+	SetPinValue(PORT_C,0,1);
+	}
+	else if(temp < 40)
+	{
+		SetPinValue(PORT_C,1,1);
+	}
+	else
+	{
+		SetPinValue(PORT_C,2,1);
 	}
 }
-u8 result ()
-{
-u8 n1,n2,or,res ;
 
-while (1)
-{
-	key = PressedKey();
-	if (key>= '0' && key <='9')
-	{
-		n1 =key-'0';
-	lcd_send_data(key);
-		_delay_ms(1000);
-		break;
-	}
+	_delay_ms(200);
 }
-	while (1)
-	{
-		key = PressedKey();
-		if (key == '+' || key == '-' || key == '*' || key == '/')
-		{
-			or =key;
-				lcd_send_data(key);
-			break;
-		}
-	}
-			while (1)
-		{
-			key = PressedKey();
-			if (key>= '0' && key <='9')
-			{
-				n2 =key-'0';
-					lcd_send_data(key);
-				break;
-			}
-		}
-				while (1)
-				{
-					key = PressedKey();
-					if (key=='=')
-					{
-						lcd_send_data(key);
-					 if (or=='+')
-					{
-						return res =n1+n2;
-					}
-					else if (or=='-')
-					{
-						return res =n1-n2;
-					}
-					else if (or=='*')
-					{
-						return res =n1*n2;
-					}
-					else if (or=='/')
-					{
-						return res =n1/n2;
-					}
-					}
-				}
+
+
+
+
 	
- }
-
-u8 PressedKey(void)
+void ADC_init(void)
 {
-u8 row, col;
+	ADMUX = 0b01000000;
 
-for(row=0; row<4; row++)
-{
-	SetPinValue(PORT_A,0,HIGH);
-	SetPinValue(PORT_A,1,HIGH);
-	SetPinValue(PORT_A,2,HIGH);
-	SetPinValue(PORT_A,3,HIGH);
-
-	SetPinValue(PORT_A,row,LOW);
-
-	for( col=0; col<4; col++)
-	{
-		if(GetPinValue(PORT_A,col+4)==LOW)
-		{
-			_delay_ms(20);
-
-			while(GetPinValue(PORT_A,col+4)==LOW);
-
-			return keys[row][col];
-		}
-	}
+	ADCSRA = 0b00000111;
 }
-return 0;
-}
-void KEYPAD_Init(void)
+void ADC_voidEnable(void)
 {
-	SetPinDirection(PORT_A,0,OUTPUT);
-	SetPinDirection(PORT_A,1,OUTPUT);
-	SetPinDirection(PORT_A,2,OUTPUT);
-	SetPinDirection(PORT_A,3,OUTPUT);
+	ADCSRA |= 0x80;
+}
 
-	SetPinDirection(PORT_A,4,INPUT);
-	SetPinDirection(PORT_A,5,INPUT);
-	SetPinDirection(PORT_A,6,INPUT);
-	SetPinDirection(PORT_A,7,INPUT);
-	
-	SetPortValue(PORT_A,0xFF);
+void ADC_voidDisable(void)
+{
+	ADCSRA &= 0x7F;
 }
 
 
-void lcd_init(void) {
+u16 ADC_u16ReadADC(void)
+{
+	SET_BIT(ADCSRA, ADIF);
 
-	 SetPortDirection(PORT_C,0xFF);
-	 SetPortDirection(PORT_D,0xFF);
-	 
+	SET_BIT(ADCSRA, ADSC);
+
+	while(!(ADCSRA & (1<<ADIF)));
+
+	return (ADC * 5000UL) / 1023;
+}
+void lcd_init(void) 
+{
 	_delay_ms(50);
 
 	lcd_send_command(0x38);
@@ -329,4 +279,5 @@ u8 GetPortValue(u8 Port) {
 	}
 	return result;
 }
+
 
